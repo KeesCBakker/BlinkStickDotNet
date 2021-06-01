@@ -2,6 +2,7 @@ using BlinkStickDotNet.Animations;
 using BlinkStickDotNet.Meta;
 using BlinkStickDotNet.Usb;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -522,7 +523,19 @@ namespace BlinkStickDotNet
         /// </summary>
         public void TurnOff()
         {
-            SetColor(0, 0, 0);
+            var ledCount = GetLedCount();
+            if (ledCount < 1) return;
+
+            var offData = new List<byte>();
+            
+            for (int i = 0; i < GetLedCount(); i++)
+            {
+                offData.Add(0);
+                offData.Add(0);
+                offData.Add(0);
+            }
+
+            SetColors(0, offData.ToArray());
         }
 
         #endregion
